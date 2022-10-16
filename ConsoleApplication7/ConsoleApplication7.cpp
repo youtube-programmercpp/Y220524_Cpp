@@ -1,8 +1,8 @@
-﻿//UI Automation 利用サンプル C++ コード Copyright(C) 2022 https://www.youtube.com/@ProgrammerCpp
+﻿// ConsoleApplication7.cpp : UI Automation 利用サンプル C++ コード Copyright(C) 2022 https://www.youtube.com/@ProgrammerCpp
 #include <Windows.h>
-#include <UIAutomation.h>
 
-// --- COM 応用記述 ---
+// --- UI Automation をある程度利用しやすくするための記述 ---
+#include <UIAutomation.h>
 #include <comdef.h>
 #define	Macro(name)	_COM_SMARTPTR_TYPEDEF(name, __uuidof(name))
 Macro(IUIAutomation         );
@@ -15,10 +15,10 @@ void VerifyComError(HRESULT hr)
 	if (FAILED(hr))
 		_com_issue_error(hr);
 }
-// --------------------
+// ----------------------------------------------------------
 
 // --- UI Automation 応用サブルーチン ---
- // AutomationId 一致条件を生成
+ // AutomationId に一致する条件を生成
 IUIAutomationConditionPtr CreateAutomationIdPropertyCondition(const IUIAutomationPtr& pUIAutomation, const _variant_t& AutomationId)
 {
 	IUIAutomationConditionPtr pCondition;
@@ -54,7 +54,7 @@ int main()
 		try {
 			// UIAutomation オブジェクトを用意
 			IUIAutomationPtr pUIAutomation;
-			VerifyComError(CoCreateInstance(CLSID_CUIAutomation, nullptr, CLSCTX_INPROC_SERVER, IID_IUIAutomation, (void**)&pUIAutomation));
+			VerifyComError(pUIAutomation.CreateInstance(CLSID_CUIAutomation));
 			// AutomationId が "textBox1" である UI 要素の HWND を取得し、そのテキスト内容を変更する
 			if (const auto hWnd = NativeWindowHandleByCondition(pUIAutomation, CreateAutomationIdPropertyCondition(pUIAutomation, L"textBox1")))
 				SendMessageA(hWnd, WM_SETTEXT, 0, LPARAM("C++プログラムから送信された文字列"));
