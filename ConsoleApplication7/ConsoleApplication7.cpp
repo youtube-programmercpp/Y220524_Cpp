@@ -57,7 +57,7 @@ int main()
 			VerifyComError(pUIAutomation.CreateInstance(CLSID_CUIAutomation));
 			// AutomationId が "textBox1" である UI 要素の HWND を取得し、そのテキスト内容を変更する
 			if (const auto hWnd = NativeWindowHandleByCondition(pUIAutomation, CreateAutomationIdPropertyCondition(pUIAutomation, L"textBox1")))
-				SendMessageA(hWnd, WM_SETTEXT, 0, LPARAM("C++プログラムから送信された文字列"));
+				SendMessageA(hWnd, WM_SETTEXT, 0, LPARAM("ConsoleApplication7で設定した文字列"));
 		}
 		catch (const _com_error& e) {
 			OutputDebugString(e.ErrorMessage());

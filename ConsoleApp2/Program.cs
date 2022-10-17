@@ -37,7 +37,7 @@ namespace ConsoleApp2
 			// UIAutomation オブジェクトを用意
 			var hWnd = NativeWindowHandleByCondition(CreateAutomationIdPropertyCondition("textBox1"));
 			if (hWnd != 0)
-				SendMessageA(hWnd, WM_SETTEXT, IntPtr.Zero, "C++プログラムから送信された文字列");
+				SendMessageA(hWnd, WM_SETTEXT, IntPtr.Zero, "ConsoleApp2で設定した文字列");
 		}
 	}
 }

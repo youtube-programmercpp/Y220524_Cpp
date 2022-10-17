@@ -43,7 +43,7 @@ namespace ConsoleApp3
 				// AutomationId が "textBox1" である UI 要素の HWND を取得し、そのテキスト内容を変更する
 				var hWnd = NativeWindowHandleByCondition(pUIAutomation, CreateAutomationIdPropertyCondition(pUIAutomation, "textBox1"));
 				if (hWnd != IntPtr.Zero)
-					SendMessageA(hWnd, WM_SETTEXT, IntPtr.Zero, "C++プログラムから送信された文字列");
+					SendMessageA(hWnd, WM_SETTEXT, IntPtr.Zero, "ConsoleApp3で設定した文字列文字列");
 			}
 			catch (System.Exception e)
 			{

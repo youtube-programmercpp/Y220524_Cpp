@@ -28,7 +28,7 @@ int main()
 							if (SUCCEEDED(hr = pUIElement->get_CurrentNativeWindowHandle(&hWnd))) {
 								if (hWnd) {
 									// テキスト内容を変更
-									SendMessageA(HWND(hWnd), WM_SETTEXT, 0, LPARAM("C++プログラムから送信された文字列"));
+									SendMessageA(HWND(hWnd), WM_SETTEXT, 0, LPARAM("ConsoleApplication9で設定した文字列"));
 								}
 							}
 							pUIElement->Release();
