@@ -8,6 +8,7 @@
 Macro(IUIAutomation         );
 Macro(IUIAutomationCondition);
 Macro(IUIAutomationElement  );
+Macro(IUIAutomationValuePattern);
 #undef	Macro
 // COM の関数呼び出しが成功したことを確認する
 void VerifyComError(HRESULT hr)
@@ -35,13 +36,13 @@ IUIAutomationElementPtr FindElement(const IUIAutomationPtr& pUIAutomation, const
 	VerifyComError(pRootElement->FindFirst(TreeScope_Descendants, pCondition, &found));
 	return found;
 }
-// 条件に合う UI 要素の HWND を取得
-HWND NativeWindowHandleByCondition(const IUIAutomationPtr& pUIAutomation, const IUIAutomationConditionPtr& pCondition)
+// 条件に合う UI 要素の ValuePattern オブジェクトを取得
+IUIAutomationValuePatternPtr ValuePatternByCondition(const IUIAutomationPtr& pUIAutomation, const IUIAutomationConditionPtr& pCondition)
 {
 	if (const auto pUIElement = FindElement(pUIAutomation, pCondition)) {
-		UIA_HWND hWnd;
-		VerifyComError(pUIElement->get_CurrentNativeWindowHandle(&hWnd));
-		return HWND(hWnd);
+		IUIAutomationValuePatternPtr pValuePattern;
+		VerifyComError(pUIElement->GetCurrentPatternAs(UIA_ValuePatternId, IID_IUIAutomationValuePattern, (void**) & pValuePattern));
+		return pValuePattern;
 	}
 	else
 		return nullptr;//該当なし
@@ -55,9 +56,9 @@ int main()
 			// UIAutomation オブジェクトを用意
 			IUIAutomationPtr pUIAutomation;
 			VerifyComError(pUIAutomation.CreateInstance(CLSID_CUIAutomation));
-			// AutomationId が "textBox1" である UI 要素の HWND を取得し、そのテキスト内容を変更する
-			if (const auto hWnd = NativeWindowHandleByCondition(pUIAutomation, CreateAutomationIdPropertyCondition(pUIAutomation, L"textBox1")))
-				SendMessageA(hWnd, WM_SETTEXT, 0, LPARAM("C++プログラムから送信された文字列"));
+			// AutomationId が "textBox1" である UI 要素の ValuePattern オブジェクトを取得し、そのテキスト内容を変更する
+			if (const auto pValuePattern = ValuePatternByCondition(pUIAutomation, CreateAutomationIdPropertyCondition(pUIAutomation, L"textBox1")))
+				pValuePattern->SetValue(_bstr_t(L"ConsoleApplication7で設定した文字列"));
 		}
 		catch (const _com_error& e) {
 			OutputDebugString(e.ErrorMessage());

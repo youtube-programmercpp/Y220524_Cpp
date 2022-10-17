@@ -19,31 +19,25 @@ namespace ConsoleApp3
 			IUIAutomationElement pRootElement = pUIAutomation.GetRootElement();
 			return pRootElement.FindFirst(TreeScope.TreeScope_Descendants, pCondition);
 		}
-		// 条件に合う UI 要素の HWND を取得
-		static IntPtr NativeWindowHandleByCondition(IUIAutomation pUIAutomation, IUIAutomationCondition pCondition)
+		// 条件に合う UI 要素の ValuePattern オブジェクトを取得
+		static IUIAutomationValuePattern ValuePatternByCondition(IUIAutomation pUIAutomation, IUIAutomationCondition pCondition)
 		{
 			var pUIElement = FindElement(pUIAutomation, pCondition);
 			if (pUIElement == null)
-				return IntPtr.Zero;//該当なし
+				return null;//該当なし
 			else
-				return pUIElement.CurrentNativeWindowHandle;
+				return (IUIAutomationValuePattern)pUIElement.GetCurrentPattern(UIA_PatternIds.UIA_ValuePatternId);
 		}
-		// --------------------------------------
-		// --- SendMessageA を使用するための記述 ---
-		private const int WM_SETTEXT = 0x000C;
-		[DllImport("user32.dll", CharSet = CharSet.Ansi)]
-		public static extern IntPtr SendMessageA(IntPtr hWnd, int wMsg, IntPtr wParam, string lParam);
-		// -----------------------------------------
 		static void Main(string[] args)
 		{
 			try
 			{
 				// UIAutomation オブジェクトを用意
 				IUIAutomation pUIAutomation = new CUIAutomation();
-				// AutomationId が "textBox1" である UI 要素の HWND を取得し、そのテキスト内容を変更する
-				var hWnd = NativeWindowHandleByCondition(pUIAutomation, CreateAutomationIdPropertyCondition(pUIAutomation, "textBox1"));
-				if (hWnd != IntPtr.Zero)
-					SendMessageA(hWnd, WM_SETTEXT, IntPtr.Zero, "C++プログラムから送信された文字列");
+				// AutomationId が "textBox1" である UI 要素の ValuePattern を取得し、そのテキスト内容を変更する
+				var textBox1 = ValuePatternByCondition(pUIAutomation, CreateAutomationIdPropertyCondition(pUIAutomation, "textBox1"));
+				if (textBox1 != null)
+					textBox1.SetValue("ConsoleApp3で設定した文字列");
 			}
 			catch (System.Exception e)
 			{

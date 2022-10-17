@@ -29,11 +29,11 @@ IUIAutomationElementPtr FindElement(const IUIAutomationPtr& pUIAutomation, const
 	IUIAutomationElementPtr found = pRootElement->FindFirst(TreeScope_Descendants, pCondition);
 	return found;
 }
-// 条件に合う UI 要素の HWND を取得
-HWND NativeWindowHandleByCondition(const IUIAutomationPtr& pUIAutomation, const IUIAutomationConditionPtr& pCondition)
+// 条件に合う UI 要素の ValuePattern オブジェクトを取得
+IUIAutomationValuePatternPtr ValuePatternByCondition(const IUIAutomationPtr& pUIAutomation, const IUIAutomationConditionPtr& pCondition)
 {
 	if (const auto pUIElement = FindElement(pUIAutomation, pCondition))
-		return static_cast<HWND>(pUIElement->CurrentNativeWindowHandle);
+		return { static_cast<IUIAutomationValuePattern*>(pUIElement->GetCachedPatternAs(UIA_ValuePatternId, const_cast<GUID*>(&__uuidof(IUIAutomationValuePattern)))), false };
 	else
 		return nullptr;//該当なし
 }
@@ -45,8 +45,8 @@ int main()
 			// UIAutomation オブジェクトを用意
 			IUIAutomationPtr pUIAutomation;
 			VerifyComError(pUIAutomation.CreateInstance(__uuidof(CUIAutomation)));
-			if (const auto hWnd = NativeWindowHandleByCondition(pUIAutomation, CreateAutomationIdPropertyCondition(pUIAutomation, L"textBox1")))
-				SendMessageA(hWnd, WM_SETTEXT, 0, LPARAM("C++プログラムから送信された文字列"));
+			if (const auto textBox1 = ValuePatternByCondition(pUIAutomation, CreateAutomationIdPropertyCondition(pUIAutomation, L"textBox1")))
+				textBox1->SetValue(L"ConsoleApplication8で設定した文字列");
 		}
 		catch (const _com_error& e) {
 			OutputDebugString(e.ErrorMessage());

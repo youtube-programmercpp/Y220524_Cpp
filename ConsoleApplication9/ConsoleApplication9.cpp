@@ -23,12 +23,14 @@ int main()
 					IUIAutomationElement* pUIElement;
 					if (SUCCEEDED(hr = pRootElement->FindFirst(TreeScope_Descendants, pCondition, &pUIElement))) {
 						if (pUIElement) {
-							// 条件に合う UI 要素の HWND を取得
-							UIA_HWND hWnd;
-							if (SUCCEEDED(hr = pUIElement->get_CurrentNativeWindowHandle(&hWnd))) {
-								if (hWnd) {
+							// 条件に合う UI 要素の ValuePattern オブジェクトを取得
+							IUIAutomationValuePattern* pValuePattern;
+							if (SUCCEEDED(hr = pUIElement->GetCurrentPatternAs(UIA_ValuePatternId, __uuidof(pValuePattern), (void**) & pValuePattern))) {
+								if (pValuePattern) {
 									// テキスト内容を変更
-									SendMessageA(HWND(hWnd), WM_SETTEXT, 0, LPARAM("C++プログラムから送信された文字列"));
+									const BSTR Value = SysAllocString(L"ConsoleApplication9で設定した文字列");
+									pValuePattern->SetValue(Value);
+									SysFreeString(Value);
 								}
 							}
 							pUIElement->Release();
@@ -38,6 +40,7 @@ int main()
 				}
 				pCondition->Release();
 			}
+			VariantClear(&AutomationId);
 			pUIAutomation->Release();
 		}
 		// UI Automation を使い終わったら CoUninitialize を呼ぶ。（使い終わっていないのに呼んだら駄目）

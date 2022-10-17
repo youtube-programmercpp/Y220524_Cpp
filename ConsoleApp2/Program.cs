@@ -17,27 +17,22 @@ namespace ConsoleApp2
 		{
 			return AutomationElement.RootElement.FindFirst(TreeScope.Descendants, pCondition);
 		}
-		// 条件に合う UI 要素の HWND を取得
-		static int NativeWindowHandleByCondition(Condition pCondition)
+		// 条件に合う UI 要素の ValuePattern オブジェクトを取得
+		static ValuePattern ValuePatternByCondition(Condition pCondition)
 		{
 			var pUIElement = FindElement(pCondition);
 			if (pUIElement == null)
-				return 0;
+				return null;
 			else
-				return pUIElement.Current.NativeWindowHandle;
+				return (ValuePattern)pUIElement.GetCurrentPattern(ValuePattern.Pattern);
 		}
 		// --------------------------------------
-		// --- SendMessageA を使用するための記述 ---
-		private const int WM_SETTEXT = 0x000C;
-		[DllImport("user32.dll", CharSet = CharSet.Ansi)]
-		public static extern IntPtr SendMessageA(int hWnd, int wMsg, IntPtr wParam, string lParam);
-		// -----------------------------------------
 		static void Main(string[] args)
 		{
 			// UIAutomation オブジェクトを用意
-			var hWnd = NativeWindowHandleByCondition(CreateAutomationIdPropertyCondition("textBox1"));
-			if (hWnd != 0)
-				SendMessageA(hWnd, WM_SETTEXT, IntPtr.Zero, "C++プログラムから送信された文字列");
+			var textBox1 = ValuePatternByCondition(CreateAutomationIdPropertyCondition("textBox1"));
+			if (textBox1 != null)
+				textBox1.SetValue("ConsoleApp2で設定した文字列");
 		}
 	}
 }
