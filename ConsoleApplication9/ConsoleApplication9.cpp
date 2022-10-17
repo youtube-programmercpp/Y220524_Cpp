@@ -38,6 +38,7 @@ int main()
 				}
 				pCondition->Release();
 			}
+			(void)VariantClear(&AutomationId);
 			pUIAutomation->Release();
 		}
 		// UI Automation を使い終わったら CoUninitialize を呼ぶ。（使い終わっていないのに呼んだら駄目）
