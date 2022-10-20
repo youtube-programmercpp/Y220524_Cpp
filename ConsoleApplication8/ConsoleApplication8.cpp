@@ -29,24 +29,44 @@ IUIAutomationElementPtr FindElement(const IUIAutomationPtr& pUIAutomation, const
 	IUIAutomationElementPtr found = pRootElement->FindFirst(TreeScope_Descendants, pCondition);
 	return found;
 }
-// 条件に合う UI 要素の ValuePattern オブジェクトを取得
-IUIAutomationValuePatternPtr ValuePatternByCondition(const IUIAutomationPtr& pUIAutomation, const IUIAutomationConditionPtr& pCondition)
+void Test(const IUIAutomationPtr& pUIAutomation)
 {
-	if (const auto pUIElement = FindElement(pUIAutomation, pCondition))
-		return { static_cast<IUIAutomationValuePattern*>(pUIElement->GetCachedPatternAs(UIA_ValuePatternId, const_cast<GUID*>(&__uuidof(IUIAutomationValuePattern)))), false };
-	else
-		return nullptr;//該当なし
+	if (const auto  Form1 = pUIAutomation->GetRootElement()->FindFirst
+	( TreeScope_Descendants
+	, pUIAutomation->CreateAndCondition
+		( pUIAutomation->CreatePropertyCondition(UIA_ControlTypePropertyId, UIA_WindowControlTypeId)
+		, pUIAutomation->CreatePropertyCondition(UIA_AutomationIdPropertyId, L"Form1")
+		)
+	)) {
+		const auto textBox1 = Form1->FindFirst
+		( TreeScope_Descendants
+		, pUIAutomation->CreateAndCondition
+			( pUIAutomation->CreatePropertyCondition(UIA_ControlTypePropertyId, UIA_EditControlTypeId)
+			, pUIAutomation->CreatePropertyCondition(UIA_AutomationIdPropertyId, L"textBox1")
+			)
+		);
+		const auto button1 = Form1->FindFirst
+		( TreeScope_Descendants
+		, pUIAutomation->CreateAndCondition
+			( pUIAutomation->CreatePropertyCondition(UIA_ControlTypePropertyId, UIA_ButtonControlTypeId)
+			, pUIAutomation->CreatePropertyCondition(UIA_AutomationIdPropertyId, L"button1")
+			)
+		);
+		if (textBox1 && button1) {
+			IUIAutomationValuePatternPtr {static_cast<IUIAutomationValuePattern *>(textBox1->GetCurrentPatternAs(UIA_ValuePatternId , const_cast<GUID*>(&__uuidof(IUIAutomationValuePattern )))), false}->SetValue(L"TEST");
+			IUIAutomationInvokePatternPtr{static_cast<IUIAutomationInvokePattern*>(button1 ->GetCurrentPatternAs(UIA_InvokePatternId, const_cast<GUID*>(&__uuidof(IUIAutomationInvokePattern)))), false}->Invoke();
+		}
+	}
 }
 // --------------------------------------
 int main()
 {
 	if (SUCCEEDED(CoInitializeEx(nullptr, COINIT_MULTITHREADED))) {
 		try {
-			// UIAutomation オブジェクトを用意
+			// Prepare UIAutomation Object
 			IUIAutomationPtr pUIAutomation;
 			VerifyComError(pUIAutomation.CreateInstance(__uuidof(CUIAutomation)));
-			if (const auto textBox1 = ValuePatternByCondition(pUIAutomation, CreateAutomationIdPropertyCondition(pUIAutomation, L"textBox1")))
-				textBox1->SetValue(L"ConsoleApplication8で設定した文字列");
+			Test(pUIAutomation);
 		}
 		catch (const _com_error& e) {
 			OutputDebugString(e.ErrorMessage());
