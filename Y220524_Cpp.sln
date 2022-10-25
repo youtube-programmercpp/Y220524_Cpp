@@ -33,6 +33,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ConsoleApplication9", "Cons
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ConsoleApplication10", "ConsoleApplication10\ConsoleApplication10.vcxproj", "{6C9FE465-5D45-4276-A346-FDAF6388CC66}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ConsoleApplication11", "ConsoleApplication11\ConsoleApplication11.vcxproj", "{3E132E9C-214E-4784-8105-DB28C4A4703D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -223,6 +225,18 @@ Global
 		{6C9FE465-5D45-4276-A346-FDAF6388CC66}.Release|x64.Build.0 = Release|x64
 		{6C9FE465-5D45-4276-A346-FDAF6388CC66}.Release|x86.ActiveCfg = Release|Win32
 		{6C9FE465-5D45-4276-A346-FDAF6388CC66}.Release|x86.Build.0 = Release|Win32
+		{3E132E9C-214E-4784-8105-DB28C4A4703D}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{3E132E9C-214E-4784-8105-DB28C4A4703D}.Debug|Any CPU.Build.0 = Debug|x64
+		{3E132E9C-214E-4784-8105-DB28C4A4703D}.Debug|x64.ActiveCfg = Debug|x64
+		{3E132E9C-214E-4784-8105-DB28C4A4703D}.Debug|x64.Build.0 = Debug|x64
+		{3E132E9C-214E-4784-8105-DB28C4A4703D}.Debug|x86.ActiveCfg = Debug|Win32
+		{3E132E9C-214E-4784-8105-DB28C4A4703D}.Debug|x86.Build.0 = Debug|Win32
+		{3E132E9C-214E-4784-8105-DB28C4A4703D}.Release|Any CPU.ActiveCfg = Release|x64
+		{3E132E9C-214E-4784-8105-DB28C4A4703D}.Release|Any CPU.Build.0 = Release|x64
+		{3E132E9C-214E-4784-8105-DB28C4A4703D}.Release|x64.ActiveCfg = Release|x64
+		{3E132E9C-214E-4784-8105-DB28C4A4703D}.Release|x64.Build.0 = Release|x64
+		{3E132E9C-214E-4784-8105-DB28C4A4703D}.Release|x86.ActiveCfg = Release|Win32
+		{3E132E9C-214E-4784-8105-DB28C4A4703D}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
