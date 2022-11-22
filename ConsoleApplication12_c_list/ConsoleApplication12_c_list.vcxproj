@@ -129,6 +129,7 @@
   <ItemGroup>
     <ClCompile Include="ConsoleApplication12_c_list.cpp" />
     <ClCompile Include="q14271341894_list.c" />
+    <ClCompile Include="q14271341894_list_special.cpp" />
     <ClCompile Include="q14271341894_list_cpp.cpp" />
     <ClCompile Include="q14271341894_std_list.cpp" />
   </ItemGroup>

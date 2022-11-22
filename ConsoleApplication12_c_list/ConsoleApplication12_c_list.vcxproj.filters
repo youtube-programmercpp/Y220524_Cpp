@@ -27,5 +27,8 @@
     <ClCompile Include="q14271341894_std_list.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="q14271341894_list_special.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
