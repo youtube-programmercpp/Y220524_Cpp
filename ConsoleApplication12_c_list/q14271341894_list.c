@@ -106,18 +106,23 @@ struct list arrange(const struct list* input)
 		return list_construct();
 }
 
-//テスト用メイン関数
+//メイン関数
 int main()
 {
 	struct list input = list_construct();
-	list_push_back(&input, 4);
-	list_push_back(&input, 2);
-	list_push_back(&input, 3);
-	list_push_back(&input, 8);
-	list_push_back(&input, 7);
-	list_push_back(&input, 1);
-	list_push_back(&input, 6);
-	list_push_back(&input, 9);
+	for (printf("リストに追加する整数値を入力してください。\n整数値として解釈出来ないデータが入力されると、そこまでの入力データを処理して結果を表示します。\n");;) {
+		printf("値: ");
+		int n;
+		if (scanf_s("%d", &n) == 1) {
+			//入力された値をリストに追加
+			list_push_back(&input, n);
+		}
+		else {
+			//入力失敗
+			//入力終了
+			break;
+		}
+	}
 	fputs("入力:", stdout); list_display(&input ); putchar('\n');
 	struct list output = arrange(&input);
 	fputs("出力:", stdout); list_display(&output); putchar('\n');
